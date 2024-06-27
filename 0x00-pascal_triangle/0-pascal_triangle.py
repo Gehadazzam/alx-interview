@@ -15,7 +15,7 @@ def pascal_triangle(n):
     """
     
     if n <= 0 or type(n) is not int:
-        raise ValueError("n must be a positive integer.")
+        return []
     
     pyramid = [[1]]  # Initialize the pyramid with the first row
     
