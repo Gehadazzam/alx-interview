@@ -11,6 +11,8 @@ def canUnlockAll(boxes):
     The first box boxes[0] is unlocked
     Return True if all boxes can be opened, else return False"""
 
+    if not boxes:
+        return True
     # Initialize a set to keep track of visited boxes
     boxesVisited = set()
 
