@@ -1,15 +1,3 @@
-#!/usr/bin/python3
-
-"""
-This module provides a function to determine the winner of a game played between
-Maria and Ben. The game involves choosing prime numbers from a set of consecutive
-integers and removing the chosen number and its multiples from the set.
-
-The function isWinner takes the number of rounds and an array of integers as input
-and returns the name of the player who won the most rounds. If the winner cannot be
-determined, it returns None.
-"""
-
 def isWinner(x, nums):
     """
     Determine the winner of a game played between Maria and Ben.
@@ -23,51 +11,40 @@ def isWinner(x, nums):
     str: The name of the player who won the most rounds, or None if the winner
          cannot be determined.
     """
-
-    def is_prime(num):
+    def sieve_of_eratosthenes(max_n):
         """
-        Check if a number is prime.
-
+        Generate a list indicating whether numbers up to max_n are prime.
+        
         Args:
-        num (int): The number to check.
-
+        max_n (int): The maximum number to check for primes.
+        
         Returns:
-        bool: True if the number is prime, False otherwise.
+        list: A list where index i is True if i is a prime number, otherwise False.
         """
-        if num <= 1:
-            return False
-        for i in range(2, int(num**0.5) + 1):
-            if num % i == 0:
-                return False
-        return True
+        primes = [True] * (max_n + 1)
+        primes[0] = primes[1] = False
+        
+        for i in range(2, int(max_n**0.5) + 1):
+            if primes[i]:
+                for j in range(i*i, max_n + 1, i):
+                    primes[j] = False
+        
+        return primes
 
-    def play_game(n):
-        """
-        Play a round of the game.
+    max_n = max(nums)
+    primes = sieve_of_eratosthenes(max_n)
+    prime_count = [0] * (max_n + 1)
 
-        Args:
-        n (int): The set of consecutive integers for this round.
-
-        Returns:
-        str: The name of the player who won this round.
-        """
-        numbers = list(range(1, n + 1))
-        player_turn = "Maria"
-        while numbers:
-            for num in numbers:
-                if is_prime(num):
-                    numbers = [n for n in numbers if n % num != 0]
-                    player_turn = "Ben" if player_turn == "Maria" else "Maria"
-                    break
-            else:
-                break
-        return player_turn
+    for i in range(1, max_n + 1):
+        prime_count[i] = prime_count[i-1] + (1 if primes[i] else 0)
 
     wins = {"Maria": 0, "Ben": 0}
+
     for n in nums:
-        winner = play_game(n)
-        if winner:
-            wins[winner] += 1
+        if prime_count[n] % 2 == 1:
+            wins["Maria"] += 1
+        else:
+            wins["Ben"] += 1
 
     if wins["Maria"] > wins["Ben"]:
         return "Maria"
@@ -75,4 +52,3 @@ def isWinner(x, nums):
         return "Ben"
     else:
         return None
-
