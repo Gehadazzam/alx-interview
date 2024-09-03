@@ -1,3 +1,15 @@
+#!/usr/bin/python3
+
+"""
+This module provides a function to determine the winner of a game played between
+Maria and Ben. The game involves choosing prime numbers from a set of consecutive
+integers and removing the chosen number and its multiples from the set.
+
+The function isWinner takes the number of rounds and an array of integers as input
+and returns the name of the player who won the most rounds. If the winner cannot be
+determined, it returns None.
+"""
+
 def isWinner(x, nums):
     """
     Determine the winner of a game played between Maria and Ben.
